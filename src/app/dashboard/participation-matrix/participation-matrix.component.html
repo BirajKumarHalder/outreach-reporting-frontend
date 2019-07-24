@@ -1,0 +1,344 @@
+<div *ngIf="isDataReady || isError; else loading">
+  <div *ngIf="!isError; else error">
+    <mat-expansion-panel class="m-1" [expanded]="filterApplied" (opened)="toggleFilterAppliedFlag();">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <i class="fa fa-filter" aria-hidden="true"></i> &nbsp;Filters
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="row">
+        <div class="col">
+          <mat-form-field>
+            <input matInput [matDatepicker]="startDatePicker" placeholder="Start date" [(ngModel)]="startDateFilter"
+              readonly>
+            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field>
+            <input matInput [matDatepicker]="endDatePicker" placeholder="End date" [(ngModel)]="endDateFilter" readonly>
+            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col">
+          <div>Categories</div>
+          <hr class="my-0" />
+          <div>
+            <div *ngFor="let c of categoryFilter" class="inline mx-3">
+              <mat-checkbox (change)="changeCategories(c);" [(ngModel)]="c.selected">{{c.name}}
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col">
+          <div>Projects</div>
+          <hr class="my-0" />
+          <div>
+            <div *ngFor="let c of projectFilter" class="inline mx-3">
+              <mat-checkbox (change)="changeProjects(c);" [(ngModel)]="c.selected">{{c.name}}
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col">
+          <div>Locations</div>
+          <hr class="my-0" />
+          <div>
+            <div *ngFor="let c of locationFilter" class="inline mx-3">
+              <mat-checkbox (change)="changeLocations(c);" [(ngModel)]="c.selected">{{c.name}}
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col">
+          <div>Business Units</div>
+          <hr class="my-0" />
+          <div>
+            <div *ngFor="let c of businessUnitFilter" class="inline mx-3">
+              <mat-checkbox (change)="changeBusinessUnits(c);" [(ngModel)]="c.selected">{{c.name}}
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button class="float-right" mat-button (click)="applyFilter();">Apply</button>
+        </div>
+      </div>
+    </mat-expansion-panel>
+    <div class="row mx-0 my-1">
+      <div class="col px-0">
+        <mdb-card class="m-1 shadow-none">
+          <mdb-card-body>
+            <div style="display: block">
+              <canvas mdbChart [chartType]="peerComparisonPieChartType" [datasets]="peerComparisonPieChartDatasets"
+                [labels]="peerComparisonPieChartLabels" [colors]="peerComparisonPieChartColors"
+                [options]="peerComparisonPieChartOptions" [legend]="false">
+              </canvas>
+            </div>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+      <div class="col px-0">
+        <mdb-card class="m-1 shadow-none">
+          <mdb-card-body>
+            <div style="display: block">
+              <canvas mdbChart [chartType]="designationVsVolunteerChartType"
+                [datasets]="designationVsVolunteerChartDatasets" [labels]="designationVsVolunteerChartLabels"
+                [colors]="designationVsVolunteerChartColors" [options]="designationVsVolunteerChartOptions"
+                [legend]="false">
+              </canvas>
+            </div>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+    </div>
+    <mdb-card class="inline m-1 shadow-none">
+      <mdb-card-body class="pb-0 px-3 pt-2 border-left-primary"
+        style="padding-right: 30px!important; padding-left: 23px!important;">
+        <mdb-card-title class="text-muted text-sm font-weight-light">
+          Events
+        </mdb-card-title>
+        <mdb-card-text class="text-center">
+          <h3>{{response.totalNumberOfEvents}}</h3>
+        </mdb-card-text>
+      </mdb-card-body>
+    </mdb-card>
+    <mdb-card class="inline m-1 shadow-none">
+      <mdb-card-body class="pb-0 px-3 pt-2 border-left-success">
+        <mdb-card-title class="text-muted text-sm font-weight-light">
+          Headcount
+        </mdb-card-title>
+        <mdb-card-text class="text-center">
+          <h3>{{response.headCount}}</h3>
+        </mdb-card-text>
+      </mdb-card-body>
+    </mdb-card>
+    <mdb-card class="inline m-1 shadow-none">
+      <mdb-card-body class="pb-0 px-3 pt-2 border-left-info">
+        <mdb-card-title class="text-muted text-sm font-weight-light">
+          Unique volunteers
+        </mdb-card-title>
+        <mdb-card-text class="text-center">
+          <h3>{{response.uniqueVolunteers}}</h3>
+        </mdb-card-text>
+      </mdb-card-body>
+    </mdb-card>
+    <mdb-card class="inline m-1 shadow-none">
+      <mdb-card-body class="pb-0 px-2 pt-2 border-left-warn">
+        <mdb-card-title class="text-muted text-sm font-weight-light">
+          Total volunteering hrs.
+        </mdb-card-title>
+        <mdb-card-text class="text-center">
+          <h3>{{response.totalVolunteeringHours}}</h3>
+        </mdb-card-text>
+      </mdb-card-body>
+    </mdb-card>
+    <mdb-card class="inline m-1 shadow-none">
+      <mdb-card-body class="pb-0 px-3 pt-2 border-left-danger">
+        <mdb-card-title class="text-muted text-sm font-weight-light">
+          Volunteering hrs.
+        </mdb-card-title>
+        <mdb-card-text class="text-center">
+          <h3>{{response.volunteeringHours}}</h3>
+        </mdb-card-text>
+      </mdb-card-body>
+    </mdb-card>
+    <mdb-card class="inline m-1 shadow-none">
+      <mdb-card-body class="pb-0 px-3 pt-2 border-left-secondary">
+        <mdb-card-title class="text-muted text-sm font-weight-light">
+          Travelling hrs.
+        </mdb-card-title>
+        <mdb-card-text class="text-center">
+          <h3>{{response.travellingHours}}</h3>
+        </mdb-card-text>
+      </mdb-card-body>
+    </mdb-card>
+    <mdb-card class="inline m-1 shadow-none">
+      <mdb-card-body class="pb-0 px-3 pt-2 border-left-light-green">
+        <mdb-card-title class="text-muted text-sm font-weight-light">
+          Coverage
+        </mdb-card-title>
+        <mdb-card-text class="text-center">
+          <h3>{{response.coverage}}</h3>
+        </mdb-card-text>
+      </mdb-card-body>
+    </mdb-card>
+    <mdb-card class="inline m-1 shadow-none">
+      <mdb-card-body class="pb-0 px-2 pt-2 border-left-cyan">
+        <mdb-card-title class="text-muted text-sm font-weight-light">
+          Avg freq / volunteer
+        </mdb-card-title>
+        <mdb-card-text class="text-center">
+          <h3>{{response.averageFrequencyPerVolunteer}}</h3>
+        </mdb-card-text>
+      </mdb-card-body>
+    </mdb-card>
+    <mdb-card class="inline m-1 shadow-none">
+      <mdb-card-body class="pb-0 px-3 pt-2 border-left-deep-orange">
+        <mdb-card-title class="text-muted text-sm font-weight-light">
+          Avg hrs / volunteer
+        </mdb-card-title>
+        <mdb-card-text class="text-center">
+          <h3>{{response.averageHoursPerVolunteer}}</h3>
+        </mdb-card-text>
+      </mdb-card-body>
+    </mdb-card>
+    <mat-expansion-panel *ngFor="let ev of eventData" class="m-1">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ev.eventId}} : {{ev.eventName}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mdb-card class="m-1">
+        <div class="alert alert-dark text-center"
+          style="border-bottom-right-radius: 0rem;border-bottom-left-radius: 0rem" role="alert">
+          Event Details
+        </div>
+        <mdb-card-body class="py-0">
+          <div class="row mx-2 my-3">
+            <div class="col">
+              Id: {{ev.eventId}}
+            </div>
+            <div class="col">
+              Master Id: {{ev.eventMasterId}}
+            </div>
+            <div class="col">
+              Activity Type: {{ev.activityType}}
+            </div>
+            <div class="col">
+              Status: {{ev.eventStatus}}
+            </div>
+            <div class="col">
+              Date: {{ev.eventDate|date}}
+            </div>
+          </div>
+          <div class="row mx-2 my-3">
+            <div class="col">
+              Name: {{ev.eventName}}
+            </div>
+          </div>
+          <div class="row mx-2 my-3">
+            <div class="col">
+              Description: {{ev.eventDescription}}
+            </div>
+          </div>
+          <div class="row mx-2 my-3">
+            <div class="col">
+              Project: {{ev.project}}
+            </div>
+            <div class="col">
+              Category: {{ev.category}}
+            </div>
+          </div>
+          <div class="row mx-2 my-3">
+            <div class="col">
+              Venue: {{ev.venueAddress}}
+            </div>
+          </div>
+          <div class="row mx-2 my-3">
+            <div class="col">
+              Base Location: {{ev.baseLocation}}
+            </div>
+          </div>
+          <div class="row mx-2 my-3">
+            <div class="col">
+              Council: {{ev.councilName}}
+            </div>
+          </div>
+        </mdb-card-body>
+      </mdb-card>
+      <mdb-card *ngIf="ev?.eventVsBeneficiaryModels?.length>0" class="m-1">
+        <div class="alert alert-dark text-center"
+          style="border-bottom-right-radius: 0rem;border-bottom-left-radius: 0rem" role="alert">
+          Beneficiaries (# {{ev.eventVsBeneficiaryModels.length}})
+        </div>
+        <mdb-card-body class="py-0 mx-3">
+          <div *ngFor="let b of ev.eventVsBeneficiaryModels" class="px-2 py-1 m-2 inline">
+            {{b.beneficiary}}
+          </div>
+        </mdb-card-body>
+      </mdb-card>
+      <mdb-card *ngIf="ev?.eventVsBusinessUnitModels?.length>0" class="m-1">
+        <div class="alert alert-dark text-center"
+          style="border-bottom-right-radius: 0rem;border-bottom-left-radius: 0rem" role="alert">
+          Business Units (# {{ev.eventVsBusinessUnitModels.length}})
+        </div>
+        <mdb-card-body class="py-0 mx-3">
+          <div *ngFor="let b of ev.eventVsBusinessUnitModels" class="px-2 py-1 m-2 inline">
+            <i class="fa fa-sitemap" aria-hidden="true"></i> {{b.businessUnit}}
+          </div>
+        </mdb-card-body>
+      </mdb-card>
+      <mdb-card *ngIf="ev?.eventVsPocModels?.length>0" class="m-1">
+        <div class="alert alert-dark text-center"
+          style="border-bottom-right-radius: 0rem;border-bottom-left-radius: 0rem" role="alert">
+          POC (# {{ev.eventVsPocModels.length}})
+        </div>
+        <mdb-card-body class="py-0 mx-3">
+          <table mdbTable>
+            <tbody>
+              <tr mdbTableCol *ngFor="let poc of ev.eventVsPocModels">
+                <td>{{poc.associateDetailsModel.associateName}} ({{poc.associateDetailsModel.associateId}}) -
+                  {{poc.associateDetailsModel.designation}}
+                </td>
+                <td>
+                  <i class="fa fa-phone" aria-hidden="true"></i> {{poc.associateDetailsModel.associateContact}}</td>
+                <td>
+                  <i class="fa fa-globe" aria-hidden="true"></i> {{poc.associateDetailsModel.location}}</td>
+                <td>
+                  <i class="fa fa-sitemap" aria-hidden="true"></i> {{poc.associateDetailsModel.businessUnit}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mdb-card-body>
+      </mdb-card>
+      <mdb-card *ngIf="ev?.eventVsVolunteerModels?.length>0" class="m-1">
+        <div class="alert alert-dark text-center"
+          style="border-bottom-right-radius: 0rem;border-bottom-left-radius: 0rem" role="alert">
+          Volunteers (# {{ev.eventVsVolunteerModels.length}})
+        </div>
+        <mdb-card-body class="py-0 mx-3">
+          <table mdbTable>
+            <tbody>
+              <tr mdbTableCol *ngFor="let vol of ev.eventVsVolunteerModels">
+                <td>{{vol.associateDetailsModel.associateName}} ({{vol.associateDetailsModel.associateId}}) -
+                  {{vol.associateDetailsModel.designation}}
+                </td>
+                <td>
+                  <i class="fa fa-phone" aria-hidden="true"></i> {{vol.associateDetailsModel.associateContact}}</td>
+                <td>
+                  <i class="fa fa-globe" aria-hidden="true"></i> {{vol.associateDetailsModel.location}}</td>
+                <td>
+                  <i class="fa fa-sitemap" aria-hidden="true"></i> {{vol.associateDetailsModel.businessUnit}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mdb-card-body>
+      </mdb-card>
+    </mat-expansion-panel>
+  </div>
+</div>
+
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>
+
+<ng-template #error>
+  <div class="card">
+    <div class="card-body">
+      <div class="text-danger">{{errorMessage}}</div>
+    </div>
+  </div>
+</ng-template>

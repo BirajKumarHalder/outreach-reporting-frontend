@@ -1,0 +1,14 @@
+.navbar {
+    background: linear-gradient(to right, #11172b, #e51937);
+    color: #f3f3f5;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.nav-link:hover {
+    color: #c2c2c7 !important;
+}
+
+.mat-icon {
+    height: 20px;
+}

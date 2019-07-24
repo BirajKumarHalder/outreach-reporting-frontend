@@ -1,0 +1,30 @@
+<form *ngIf="formReady" [formGroup]="loginForm">
+  <div class="card rounded-0 my-5">
+    <div class="card-body">
+      <div class="card-title text-center">
+        <h4>Login with Cognizant Credentials</h4>
+      </div>
+      <div class="card-text text-danger my-4 text-center">{{errorMessage}}</div>
+      <mat-form-field appearance="outline">
+        <mat-label>Associate Id</mat-label>
+        <input matInput formControlName="associateId" required>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" required>
+        <button mat-icon-button matSuffix [disableRipple]="true" (click)="hide = !hide">
+          <mat-icon style="height:1.2rem;" svgIcon="{{hide ? 'visibility_off' : 'visibility'}}">
+          </mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Role</mat-label>
+        <mat-select matNativeControl formControlName="role" required>
+          <mat-option *ngFor="let r of roleOptions" [value]="r.roleName">{{r.roleName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mdbBtn type="submit" class="mx-0 float-right rounded-0 gradient-red-blue" mdbWavesEffect
+        (click)="validate()" [disabled]="!loginForm.valid || submitDissabled">Login</button>
+    </div>
+  </div>
+</form>

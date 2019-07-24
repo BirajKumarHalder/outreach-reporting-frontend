@@ -1,0 +1,43 @@
+<form *ngIf="formReady" [formGroup]="userAddForm">
+  <mdb-card class="mt-1">
+    <mdb-card-body>
+      <mdb-card-title class="text-center">
+        <h4>Add new user</h4>
+      </mdb-card-title>
+      <mdb-card-text class="text-danger my-4 text-center">{{errorMessage}}</mdb-card-text>
+      <mdb-card-text class="text-success my-4 text-center">{{successMessage}}</mdb-card-text>
+      <mat-form-field appearance="outline">
+        <mat-label>Associate id</mat-label>
+        <input matInput required formControlName="associateId">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Associate name</mat-label>
+        <input matInput required formControlName="associateName">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Contact number</mat-label>
+        <input matInput required formControlName="associateContact">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Designation</mat-label>
+        <input matInput required formControlName="designation">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Business unit</mat-label>
+        <input matInput required formControlName="businessUnit">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Location</mat-label>
+        <input matInput required formControlName="location">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Role</mat-label>
+        <mat-select matNativeControl required formControlName="role">
+          <mat-option *ngFor="let r of roleOptions" [value]="r.roleId">{{r.roleName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mdbBtn type="submit" color="cyan" class="float-right" mdbWavesEffect (click)="addUser()"
+        [disabled]="!userAddForm.valid || submitDissabled">Add user</button>
+    </mdb-card-body>
+  </mdb-card>
+</form>

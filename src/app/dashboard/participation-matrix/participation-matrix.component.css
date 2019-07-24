@@ -1,0 +1,40 @@
+.card {
+    border-radius: .35rem !important;
+}
+
+.border-left-primary {
+    border-left: .25rem solid #4e73df!important;
+}
+
+.border-left-success {
+    border-left: .25rem solid #1cc88a !important;
+}
+
+.border-left-info {
+    border-left: .25rem solid #36b9cc!important;
+}
+
+.border-left-warn {
+    border-left: .25rem solid #f6c23e!important;
+}
+
+
+.border-left-danger {
+    border-left: .25rem solid #e74a3b!important;
+}
+
+.border-left-secondary {
+    border-left: .25rem solid #858796!important;
+}
+
+.border-left-light-green {
+    border-left: .25rem solid #689F38!important;
+}
+
+.border-left-cyan {
+    border-left: .25rem solid #00BCD4!important;
+}
+
+.border-left-deep-orange {
+    border-left: .25rem solid #E64A19!important;
+}

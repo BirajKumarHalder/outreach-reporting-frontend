@@ -1,0 +1,114 @@
+<div *ngIf="isDataReady || isError; else loading">
+  <div *ngIf="!isError; else error">
+  <div class="card rounded-0 shadow-none m-2">
+    <div class="card-body">
+      <div class="card-title">
+          <div class="text-lg">Retention Matrix :
+            <span class="font-weight-light font-italic">Volunteers attended in all quarters or months
+              <span class="text-muted">vs.</span> Total volunteers</span>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="card shadow-none border rounded-0">
+            <div class="card-body">
+              <div class="card-title">
+                <div class="font-weight-light">Quarterly Retention</div>
+              </div>
+              <div class="row">
+                <div class="col" *ngFor="let rData of retentionModel.quarterlyRetentionData | keyvalue">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="card-title mb-0" style="border-bottom: 2px solid #00BFA5;">Year: {{rData.key}}</div>
+                      <div class="float-right">
+                          <span class="font-weight-normal font-italic" style="font-size:3rem;">{{rData.value.volunteersAttendedInAllQuarters}}</span> of
+                          <span class="font-weight-normal" style="font-size:2rem;">{{rData.value.totalVolunteers}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card  shadow-none border rounded-0">
+            <div class="card-body">
+              <div class="card-title">
+                <div class="font-weight-light">Monthly Retention</div>
+              </div>
+              <div class="row">
+                <div class="col" *ngFor="let rData of retentionModel.monthlyRetentionData | keyvalue">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="card-title mb-0" style="border-bottom: 2px solid #00BFA5;">Year: {{rData.key}}</div>
+                      <div class="float-right">
+                          <span class="font-weight-normal font-italic" style="font-size:3rem;">{{rData.value.volunteersAttendedInAllMonths}}</span> of
+                          <span class="font-weight-normal" style="font-size:2rem;">{{rData.value.totalVolunteers}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card rounded-0 shadow-none m-2">
+    <div class="card-body">
+      <div class="card-title">
+        <div class="text-lg">Engagement Matrix</div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <div class="card-title mb-0" style="border-bottom: 2px solid #00BFA5;">Associates engaged only one time
+              </div>
+              <div class="float-right">
+                <span class="font-weight-normal font-italic" style="font-size:3rem;">{{engagementModel.oneTimer}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+                <div class="card-title mb-0" style="border-bottom: 2px solid #00BFA5;">Associates engaged more than one time
+                </div>
+              <div class="float-right">
+                  <span class="font-weight-normal font-italic" style="font-size:3rem;">{{engagementModel.twoToFiveTimers}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+                <div class="card-title mb-0" style="border-bottom: 2px solid #00BFA5;">Associates engaged more than five time
+                </div>
+              <div class="float-right">
+                  <span class="font-weight-normal font-italic" style="font-size:3rem;">{{engagementModel.fivePlusTimers}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>
+
+<ng-template #error>
+  <div class="card">
+    <div class="card-body">
+      <div class="text-danger">{{errorMessage}}</div>
+    </div>
+  </div>
+</ng-template>

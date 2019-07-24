@@ -1,0 +1,42 @@
+<div class="container">
+  <mdb-card class="mt-1 mx-auto" style="width:50rem;">
+    <mdb-card-body>
+      <mdb-card-title class="mb-0">
+        <i class="fa fa-exclamation-triangle fa-2x text-danger" aria-hidden="true"></i> Please upload 'Event
+        information'
+        excel then 'Event summary' excel
+      </mdb-card-title>
+      <mdb-card-text class="text-danger my-4 text-center">{{errorMessage}}</mdb-card-text>
+      <mdb-card-text class="text-success my-4 text-center">{{successMessage}}</mdb-card-text>
+    </mdb-card-body>
+  </mdb-card>
+  <mdb-card class="mt-1 mx-auto" style="width:50rem;">
+    <mdb-card-body>
+      <mdb-card-title>
+        <h5><i class="fa fa-upload" aria-hidden="true"></i>
+          Please upload <b>event information</b> excel</h5>
+      </mdb-card-title>
+      <hr />
+      <div class="custom-file my-3">
+        <input type="file" class="custom-file-input" id="file1" (change)="handleFile1Input($event.target.files)">
+        <label class="custom-file-label rounded-0" for="file1">{{ eventInformationFileName }}</label>
+      </div>
+      <button mdbBtn type="submit" color="cyan" class="btn-sm float-right my-3" mdbWavesEffect (click)="uploadEventInformationFiles()">Upload</button>
+    </mdb-card-body>
+  </mdb-card>
+  <mdb-card class="mt-1 mx-auto" style="width:50rem;">
+    <mdb-card-body>
+      <mdb-card-title>
+        <h5><i class="fa fa-upload" aria-hidden="true"></i>
+          Please upload <b>event summary</b> excel</h5>
+      </mdb-card-title>
+      <hr />
+      <div class="custom-file my-3">
+        <input type="file" class="custom-file-input" id="file2" [disabled]="!eventInfoUploadStatus" (change)="handleFileInput($event.target.files)">
+        <label class="custom-file-label rounded-0" for="file2">{{ eventSummaryFileName }}</label>
+      </div>
+      <button mdbBtn type="submit" color="cyan" class="btn-sm float-right my-3" [disabled]="!eventInfoUploadStatus"
+        mdbWavesEffect (click)="uploadEventSummaryFiles()">Upload</button>
+    </mdb-card-body>
+  </mdb-card>
+</div>
